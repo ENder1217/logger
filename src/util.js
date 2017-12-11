@@ -64,6 +64,18 @@ util._forIn = (_obj, _callback, _this) => {
     return null;
 }
 
+util._$forEach = function (_list,_callback,_this) {
+
+    if (!!_list && !!_list.length &&
+        util._$isFunction(_callback)){
+        if (!_list.forEach){
+            util._$forIn.apply(util, arguments);
+        }else{
+            _list.forEach(_callback);
+        }
+    }
+}
+
 util._$loop = (_obj, _callback, _this) => {
 
     if (util._$isObject(_obj) &&
@@ -173,10 +185,17 @@ util._$cookie = (() => {
             _index1 = _cookie.search(_search),
             _index2;
 
-        if (_index1<0) return '';
+        if (_index1<0) {
+            return '';
+        }
+
         _index1 += _search.length-2;
         _index2 = _cookie.indexOf(';', _index1);
-        if (_index2<0) _index2 = _cookie.length;
+
+        if (_index2<0) {
+            _index2 = _cookie.length;
+        }
+
         return _cookie.substring(_index1, _index2) || '';
     };
     return (_name, _data) => {
@@ -236,7 +255,11 @@ util._$cookie = (() => {
  * @return {String}                 - key-value串
  */
 util._$object2string = (_object, _split, _encode) => {
-    if (!_object) return '';
+
+    if (!_object) {
+        return '';
+    }
+
     let _arr = [],
         _func = _encode;
 
@@ -293,6 +316,7 @@ util.text2type = (() => {
                 return null;
             }
         },
+
         dft: function(text) {
             return text;
         }

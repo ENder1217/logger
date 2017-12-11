@@ -5,7 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-
+<div data-log-id="first">
+    <ul data-log-id="second" data-log-data='{"userName": "ender"}'>
+        <li data-log-id="third" data-log-data='{"age": 18}'>
+            <span data-log-act="final" data-log-data='{"data": "aaa"}'>此节点为需要打点的节点，打开控制台查看发送请求</span>
+        </li>
+    </ul>
+</div>
 
 <script src="src/config.js"></script>
 <script src="src/util.js"></script>
