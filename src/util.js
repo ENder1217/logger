@@ -49,7 +49,7 @@ util._forIn = (_obj, _callback, _this) => {
 
     let _keys = Object.keys(_obj);
 
-    for (let i = 0, l = keys.length, _key, _ret; i < l; i++){
+    for (let i = 0, l = _keys.length, _key, _ret; i < l; i++){
         _key = _keys[i];
         _ret = _callback.call(
             _this || null,
@@ -110,7 +110,7 @@ util._$merge = function () {
     let _args = arguments,
         _last = _args.length - 1
         _filter = _args[_last],
-        ret;
+        ret = null;
 
     if (util._$isFunction(_filter)) {
         _last--;
@@ -121,7 +121,7 @@ util._$merge = function () {
     ret = _args[0] || {};
 
     for (let i = 1, _it; i <= _last; i++){
-        _it = [i];
+        _it = _args[i];
 
         util._$loop(_it, (v, k) => {
             if (!_filter(v, k)) {
@@ -213,7 +213,9 @@ util._$cookie = (() => {
         }
 
         _data = _data || {};
+
         let _cookie = _name + '=' + (_data.value || '') + ';';
+
         delete _data.value;
 
         if (_data.expires !== undefined){
@@ -292,38 +294,5 @@ util._$object2string = (_object, _split, _encode) => {
 };
 
 util._$object2query = (_obj) => {
-    util._$object2string(_obj, '&', !0);
+    return util._$object2string(_obj, '&', !0);
 }
-
-/**
- * 文本转指定类型的数据
- *
- *       // 转成json字符串
- *       var _json = _e._$text2type('{"a":"aaaaaaaaaaaaa"}',"json");
- *       // 原样返回
- *       var _text = _e._$text2type('<div id="abc">123</div>');
- *
- * @param  {String} arg0 - 文本内容
- * @param  {String} arg1 - 类型，如xml/json/text
- * @return {Variable}      指定类型的数据
- */
-util.text2type = (() => {
-    let _fmap = {
-        json: function(text) {
-            try {
-                return JSON.parse(text);
-            } catch (ex) {
-                return null;
-            }
-        },
-
-        dft: function(text) {
-            return text;
-        }
-    };
-
-    return function(text, type) {
-        type = (type || '').toLowerCase();
-        return (_fmap[type] || _fmap.dft)(text || '');
-    };
-})();
